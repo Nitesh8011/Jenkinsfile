@@ -10,23 +10,38 @@ pipeline {
     }
 
     parameters {
-        string 'FROM_EMAIL'
-        string 'TO_EMAIL'
-        string 'HOSTNAMES', description: 'seperated by coma(,) for multiple hostname'
+        string(name: 'FROM_EMAIL', description: 'Sender email address')
+        string(name: 'TO_EMAIL', description: 'Recipient email address')
+        string(name: 'HOSTNAMES', description: 'Comma-separated list of hostnames')
     }
     
-    stages{
-        stage('Clone Repo'){
+    stages {
+        stage('Clone Repo') {
             steps {
                 dir("ssl_expiry") {
                     checkout([
                         $class: 'GitSCM',
-                        branches: [[name: 'main' ]],
-                        extensions: [],
-                        userRemoteConfigs: [[credentialsId: 'https://github.com/Nitesh8011/Jenkinsfile.git']]
+                        branches: [[name: 'main']],
+                        userRemoteConfigs: [[
+                            url: 'https://github.com/Nitesh8011/Jenkinsfile.git',
+                            credentialsId: 'your-git-credential-id'
+                        ]]
                     ])
                 }
-                sh 'python3 main.py'
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                dir("ssl_expiry") {
+                    sh 'pip3 install -r requirements.txt'
+                }
+            }
+        }
+        stage('Run Script') {
+            steps {
+                dir("ssl_expiry") {
+                    sh 'python3 main.py'
+                }
             }
         }
     }
