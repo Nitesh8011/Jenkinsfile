@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    environment {
+        SMTP_PASSWORD = credentials('SMTP_PASSWORD')
+    }
+
+    triggers {
+        cron('00 18 * * *') 
+    }
+
+    parameters {
+        string 'FROM_EMAIL'
+        string 'TO_EMAIL'
+        string 'HOSTNAMES', description: 'seperated by coma(,) for multiple hostname'
+    }
+    
+    stages{
+        stage('Clone Repo'){
+            steps {
+                dir("ssl_expiry") {
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: 'main' ]],
+                        extensions: [],
+                        userRemoteConfigs: [[credentialsId: 'https://github.com/Nitesh8011/Jenkinsfile.git']]
+                    ])
+                }
+                sh 'python3 main.py'
+            }
+        }
+    }
+}
