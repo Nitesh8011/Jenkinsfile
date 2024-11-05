@@ -19,7 +19,7 @@ else:
             print(f"Remaining Days: {ssl_info['remaining_days']} days")
 
             # Send an email if certificate expiration is within 10 days
-            if ssl_info['remaining_days'] < 10:
+            if ssl_info['remaining_days'] < 60:
                 subject = f"SSL Certificate Expiration Warning for {ssl_info['hostname']}"
                 message = (f"\n\nWarning: \nThe SSL certificate for {ssl_info['hostname']} "
                            f"\nexpires in {ssl_info['remaining_days']} days!")
