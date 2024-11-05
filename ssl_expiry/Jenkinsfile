@@ -18,15 +18,13 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                dir("ssl_expiry") {
-                    checkout([
-                        $class: 'GitSCM',
-                        branches: [[name: 'main']],
-                        userRemoteConfigs: [[
-                            url: 'https://github.com/Nitesh8011/Jenkinsfile.git'
-                        ]]
-                    ])
-                }
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: 'main']],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/Nitesh8011/Jenkinsfile.git'
+                    ]]
+                ])
             }
         }
         // stage('Install Dependencies') {
