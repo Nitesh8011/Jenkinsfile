@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                dir("kustomize_check") {
+                    checkout(
+                        [
+                            $class: 'GitSCM',
+                            branches: [[name: 'main' ]],
+                            extensions: [],
+                            userRemoteConfigs: [[credentialsId: 'https://github.com/Nitesh8011/Jenkinsfile.git']]
+                        ]
+                    )
+                }
+            }
+        }
+        stage('Kustomize Check'){
+            steps{
+                dir("kustomize_check") {
+                    sh 'bash kustomize-build.sh'
+                }
+            }
+        }
+    }
+}
