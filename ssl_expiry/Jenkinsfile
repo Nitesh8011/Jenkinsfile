@@ -30,13 +30,13 @@ pipeline {
                 }
             }
         }
-        stage('Install Dependencies') {
-            steps {
-                dir("ssl_expiry") {
-                    sh 'pip3 install -r requirements.txt'
-                }
-            }
-        }
+        // stage('Install Dependencies') {
+        //     steps {
+        //         dir("ssl_expiry") {
+        //             sh 'pip3 install -r requirements.txt'
+        //         }
+        //     }
+        // }
         stage('Run Script') {
             steps {
                 dir("ssl_expiry") {
